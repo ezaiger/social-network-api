@@ -21,7 +21,7 @@
   - Install all dependencies by entering 'npm i' in the command line.
   
   ## Usage
-  Follow this <a href="">link</a> to view a walkthrough video demonstrating functionality.
+  Follow this <a href="https://drive.google.com/file/d/1I5fvPlKmhCfyM-dz4AMbs9nq6QEXgdhM/view">link</a> to view a walkthrough video demonstrating functionality.
   
   ## Contributing
   Code provided by ezaiger. Referenced Module 18 lesson material.
