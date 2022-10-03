@@ -13,7 +13,7 @@ const thoughtController = {
     
     // get a single thought by id
     getThought(req, res) {
-        Thought.findOne({ _id: req.params.id })
+        Thought.findOne({ _id: req.params.thoughtId })
             .then(dbThoughtData => {
                 if (!dbThoughtData) {
                     res.status(404).json({ message: 'No thought found with this id!' });
@@ -26,7 +26,7 @@ const thoughtController = {
     
     // create a new thought and push id to associated user thoughts
     createThought (req, res) {
-        Thought.create({ $push: { _id: req.params.userId }})
+        Thought.create(req.body)
             .then(dbThoughtData => {
                 if (!dbThoughtData) {
                     res.status(404).json({ message: 'No thought found with this id!' });
@@ -39,7 +39,7 @@ const thoughtController = {
     
     // update a thought by id
     updateThought(req, res) {
-        Thought.findOneAndUpdate({ _id: req.params.thoughtId }, {new: true})
+        Thought.findOneAndUpdate({ _id: req.params.thoughtId }, req.body, {new: true})
             .then(dbThoughtData => {
                 if (!dbThoughtData) {
                     res.status(404).json({ message: 'No thought found with this id!' });
@@ -65,7 +65,7 @@ const thoughtController = {
     
     // create a reaction stored in a single thought's reactions array field
     addReaction(req, res) {
-        Thought.findOneAndUpdate({ _id: req.params.thoughtId }, { new: true })
+        Thought.findOneAndUpdate({ _id: req.params.thoughtId }, {$push: {reactions: req.body} }, { new: true })
             .then(dbThoughtData => {
                 if (!dbThoughtData) {
                     res.status(404).json({ message: 'No thought found with this id! '});
@@ -78,7 +78,7 @@ const thoughtController = {
     
     // pull and remove a reaction by the reactionId value
     removeReaction(req, res) {
-        Thought.findOneAndUpdate({ _id: req.params.thoughtId }, { new: true })
+        Thought.findOneAndUpdate({ _id: req.params.thoughtId }, {$pull: {reactions: {reactionId: req.params.reactionId}} }, { new: true })
             .then(dbThoughtData => {
                 if (!dbThoughtData) {
                     res.status(404).json({ message: 'No thought found with this id! '});

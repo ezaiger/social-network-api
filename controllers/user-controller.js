@@ -14,9 +14,9 @@ const userController = {
     
     // get a single user by id with populated thought and friend data
     getUser(req, res) {
-        User.findOne({ _id: req.params.id })
-            .populate('thought')
-            .populate('friend')
+        User.findOne({ _id: req.params.userId })
+            .populate('thoughts')
+            .populate('friends')
             .select('-__v')
             .then(dbUserData => {
                 console.log(dbUserData);
@@ -38,7 +38,7 @@ const userController = {
     
     // update user by id
     updateUser(req, res) {
-        User.findOneAndUpdate({ _id: req.params.id }, {
+        User.updateOne({ _id: req.params.userId }, req.body, {
             new: true,
             runValidators: true
         }
@@ -73,7 +73,7 @@ const userController = {
     
     // add a new friend (:friendId) to a user's friend list (:userId)
     addFriend(req, res) {
-        User.findOneAndUpdate({ _id: req.params.userId }, {$push: {friends: req.params.friendsId}})
+        User.findOneAndUpdate({ _id: req.params.userId }, {$push: {friends: req.params.friendId}})
             .then(dbUserData => {
                 console.log(dbUserData);
                 if (!dbUserData) {
@@ -86,7 +86,7 @@ const userController = {
     
     // remove a friend (:friendId) from a user's friend list (:userId)
     deleteFriend(req, res) {
-        User.findOneAndUpdate({ _id: params.userId }, {$pull: {friends: req.params.friendsId}})
+        User.findOneAndUpdate({ _id: req.params.userId }, {$pull: {friends: req.params.friendId}})
             .then(dbUserData => {
                 console.log(dbUserData);
                 if (!dbUserData) {
